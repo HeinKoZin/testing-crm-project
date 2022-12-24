@@ -95,6 +95,12 @@
                 <span>User</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('roles') }}">
+                <i class="bi bi-person"></i>
+                <span>Role</span>
+            </a>
+        </li>
 
     </ul>
 
