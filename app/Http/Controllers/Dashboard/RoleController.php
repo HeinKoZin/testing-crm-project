@@ -35,14 +35,30 @@ class RoleController extends Controller
             $user = auth()->user();
             return DataTables::of($data)
                     ->addColumn('action', function ($row) use ($user) {
+                        if ($user->can('role-delete') && $user->can('role-edit')) {
+                            return '
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <a href="' . route("roles.edit", ["id" => $row->id]) . '" class="btn btn-success btn-sm " >
+                                    <i class="bi bi-pencil-square"></i>  Edit
+                                    </a>
+                                </div>
+                                <div>
+                                    <form method="post" action="' . route("roles.delete", ["id" => $row->id]) . ' "
+                                    id="from1" data-flag="0">
+                                    ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm delete" style="margin-left: 6px;"> <i class="bi bi-trash"></i> Delete</button>
+                                        </form>
+                                </div>
+                            </div>';
+                        }
                         if ($user->can('role-edit')) {
                             return '
                             <div class="d-flex align-items-center">
-                                    <div>
-                                        <a href="' . route("roles.edit", ["id" => $row->id]) . '" class="btn btn-success btn-sm " >
-                                        <i class="bi bi-pencil-square"></i>  Edit
-                                        </a>
-                                    </div>
+                                <div>
+                                    <a href="' . route("roles.edit", ["id" => $row->id]) . '" class="btn btn-success btn-sm " >
+                                    <i class="bi bi-pencil-square"></i>  Edit
+                                    </a>
                                 </div>
                             </div>';
                         }
@@ -59,19 +75,7 @@ class RoleController extends Controller
                                 </div>
                             </div>';
                         }
-                        if ($user->can('role-delete') || $user->can('role-edit')) {
-                            return '
-                            <div class="d-flex align-items-center">
-                                    <div >
-                                        <form method="post" action="' . route("roles.delete", ["id" => $row->id]) . ' "
-                                        id="from1" data-flag="0">
-                                        ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="btn btn-outline-danger btn-sm delete" style="margin-left: 6px;"> <i class="bi bi-trash"></i> Delete</button>
-                                            </form>
-                                    </div>
-                                </div>
-                            </div>';
-                        }
+
 
                     })
                     ->rawColumns(['created_at', 'action', 'profile_img'  ])

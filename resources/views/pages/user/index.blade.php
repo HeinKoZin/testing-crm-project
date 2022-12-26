@@ -1,5 +1,5 @@
 @extends('layouts.mainlayout')
-@section('title', 'Role')
+@section('title', 'User')
 @section('links')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -7,16 +7,16 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Role Page</h1>
+            <h1>User Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Role</li>
+                    <li class="breadcrumb-item active">User</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
         @can('role-create')
-            <a href="{{ route('roles.create') }}" class="d-flex align-items-center btn btn-primary">
+            <a href="{{ route('users.create') }}" class="d-flex align-items-center btn btn-primary">
                 <i class="bi bi-plus-lg"></i> &nbsp; Create
             </a>
         @endcan
@@ -27,14 +27,18 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Role List </h5>
+                        <h5 class="card-title">User List </h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="roleDataTable"
+                            <table class="table table-striped table-hover" id="userDataTable"
                                 style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Profile</th>
                                         <th scope="col">NAME</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">gender</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                 </thead>
@@ -51,7 +55,7 @@
 @section('script')
     <script type="text/javascript">
         $(function() {
-            var table = $('#roleDataTable').DataTable({
+            var table = $('#userDataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 dom: 'Bfrtip',
@@ -62,7 +66,7 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
                 ],
-                ajax: "{{ route('getrolelist') }}",
+                ajax: "{{ route('getuserlist') }}",
                 columns: [{
                         data: 'id',
                         render: function(data, type, row, meta) {
@@ -70,8 +74,24 @@
                         }
                     },
                     {
+                        data: 'profile',
+                        name: 'profile'
+                    },
+                    {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone'
+                    },
+                    {
+                        data: 'gender',
+                        name: 'gender'
                     },
                     {
                         data: 'action',
@@ -82,7 +102,7 @@
 
                 ]
             });
-            $('#roleDataTable').on('click', 'button.delete', function(e) {
+            $('#userDataTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
 

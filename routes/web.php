@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,18 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
         Route::get('/list', [RoleController::class, 'getRoleList'])->name('getrolelist');
     });
     // Role end //
+
+    // User start //
+    Route::group(["prefix" => "users"], function () {
+        Route::get('/', [UserController::class, 'index'])->name('users');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/save', [UserController::class, 'save'])->name('users.save');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+        Route::get('/list', [UserController::class, 'getRoleList'])->name('getuserlist');
+    });
+    // User end //
 });
 
 Route::group(["namespace" => "Auth", "prefix" => "auth"], function () {
