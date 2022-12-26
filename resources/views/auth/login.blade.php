@@ -36,7 +36,7 @@
 
     <main>
         <div class="container">
-
+            @include('sweetalert::alert')
             <section
                 class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div class="container">
@@ -52,8 +52,8 @@
                                     </div>
 
 
-                                    <form method="POST" action="{{ route('login') }}" class="row g-3 needs-validation"
-                                        novalidate>
+                                    <form method="POST" action="{{ route('auth.login') }}"
+                                        class="row g-3 needs-validation" novalidate>
                                         @csrf
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Email (or) Phone</label>
@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Don't have account? <a
-                                                    href="{{ route('register') }}">Create an account</a></p>
+                                                    href="{{ route('auth.register.index') }}">Create an account</a></p>
                                         </div>
                                     </form>
 

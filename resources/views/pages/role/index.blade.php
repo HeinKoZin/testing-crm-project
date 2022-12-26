@@ -17,7 +17,7 @@
         </div><!-- End Page Title -->
         @can('role-create')
             <a href="{{ route('roles.create') }}" class="d-flex align-items-center btn btn-primary">
-                <i class="bi bi-plus-lg"></i>Add
+                <i class="bi bi-plus-lg"></i> &nbsp; Create
             </a>
         @endcan
     </div>

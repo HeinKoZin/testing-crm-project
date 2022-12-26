@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Dashboard\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +35,10 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
 });
 
 Route::group(["namespace" => "Auth", "prefix" => "auth"], function () {
-    Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
-    Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::get('/login', [AuthController::class, 'loginPage'])->name('auth.login.index');
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/register', [AuthController::class, 'registerPage'])->name('auth.register.index');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 });
 
 Auth::routes();

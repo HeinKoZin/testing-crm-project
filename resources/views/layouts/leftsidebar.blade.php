@@ -97,7 +97,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('roles') }}">
-                <i class="bi bi-person"></i>
+                <i class="bi bi-shield-lock"></i>
                 <span>Role</span>
             </a>
         </li>

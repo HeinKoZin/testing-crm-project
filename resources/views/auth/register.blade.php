@@ -58,9 +58,20 @@
                                         <h5 class="card-title text-center pb-0 fs-4">Register</h5>
                                     </div>
                                     <hr>
-                                    <form method="POST" action="{{ route('register') }}"
+                                    <form method="POST" action="{{ route('auth.register') }}"
                                         class="row g-3 needs-validation" novalidate>
                                         @csrf
+                                        <div class="col-md-12 mb-3">
+                                            <label for="profile">Customer Profile:</label>
+                                            <br>
+                                            <label for="profile">
+                                                <img id="blah" src="{{ asset('assets/img/images.jpg') }}"
+                                                    class="rounded shadow-sm p-1"
+                                                    style="transition: 0.4s; height: 100px; width: 100px" />
+                                            </label>
+                                            <input hidden accept="image/*" name="profile" type='file' id="profile"
+                                                class="mx-2" />
+                                        </div>
                                         <div class="col-12">
                                             <label for="yourName" class="form-label">Your Name</label>
                                             <input id="name" type="text"
@@ -88,7 +99,8 @@
                                         </div>
                                         <div class="col-6">
                                             <label for="yourPhone" class="form-label">Phone</label>
-                                            <input type="text" name="phone" class="form-control" id="yourPhone">
+                                            <input type="text" name="phone" class="form-control" id="yourPhone"
+                                                value="{{ old('phone') }}">
                                         </div>
                                         <div class="col-12">
                                             <label for="yourPhone" class="form-label">Gender</label>
@@ -130,7 +142,7 @@
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Already have an account? <a
-                                                    href="{{ route('login') }}">Log in</a></p>
+                                                    href="{{ route('auth.login.index') }}">Log in</a></p>
                                         </div>
                                     </form>
 
@@ -161,6 +173,14 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script>
+        profile.onchange = evt => {
+            const [file] = profile.files
+            if (file) {
+                blah.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
 
 </body>
 
