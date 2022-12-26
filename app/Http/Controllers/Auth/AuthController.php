@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -48,6 +49,8 @@ class AuthController extends Controller
             'gender' => $request->gender,
             'phone' => $request->phone,
         ]);
+        $role = Role::find(2);
+        $user->assignRole($role->id);
         return redirect()->route('auth.login.index')->with('success', "Registration Successfully!");
     }
 
@@ -81,6 +84,6 @@ class AuthController extends Controller
     public function logout() {
         Session::flush();
         Auth::logout();
-        return redirect('/auth/login')->with('success', 'You have been logout successfully!');
+        return redirect()->route('auth.login.index')->with('success', 'You have been logout successfully!');
     }
 }

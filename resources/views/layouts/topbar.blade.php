@@ -186,13 +186,13 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('auth.logout') }}"
                             onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </li>
