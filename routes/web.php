@@ -43,6 +43,8 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
         Route::put('/update/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
         Route::get('/list', [UserController::class, 'getRoleList'])->name('getuserlist');
+        Route::get('/export',[UserController::class,  'export'])->name('users.export');
+        Route::post('/import', [UserController::class, 'import'])->name('users.import');
     });
     // User end //
 });

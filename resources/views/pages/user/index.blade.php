@@ -15,6 +15,8 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+
+        {{-- <a class="btn btn-warning float-end" href="{{ route('users.export') }}">Export User Data</a> --}}
         @can('role-create')
             <a href="{{ route('users.create') }}" class="d-flex align-items-center btn btn-primary">
                 <i class="bi bi-plus-lg"></i> &nbsp; Create
@@ -27,6 +29,21 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
+                        <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row py-4">
+                                <div class="col-md-12">
+                                    <h3>Excel Import</h3>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="file" name="file" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
                         <h5 class="card-title">User List </h5>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="userDataTable"
@@ -35,11 +52,11 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Profile</th>
-                                        <th scope="col">NAME</th>
+                                        <th scope="col">Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Phone</th>
-                                        <th scope="col">gender</th>
-                                        <th scope="col">ACTION</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                             </table>

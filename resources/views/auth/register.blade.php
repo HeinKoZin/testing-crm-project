@@ -31,12 +31,6 @@
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.4.1
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -62,14 +56,14 @@
                                         class="row g-3 needs-validation" novalidate>
                                         @csrf
                                         <div class="col-md-12 mb-3">
-                                            <label for="profile">Customer Profile:</label>
+                                            <label>Customer Profile:</label>
                                             <br>
-                                            <label for="profile">
+                                            <label for="imgInp">
                                                 <img id="blah" src="{{ asset('assets/img/images.jpg') }}"
                                                     class="rounded shadow-sm p-1"
                                                     style="transition: 0.4s; height: 100px; width: 100px" />
                                             </label>
-                                            <input hidden accept="image/*" name="profile" type='file' id="profile"
+                                            <input hidden accept="image/*" name="profile" type='file' id="imgInp"
                                                 class="mx-2" />
                                         </div>
                                         <div class="col-12">
@@ -174,8 +168,8 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <script>
-        profile.onchange = evt => {
-            const [file] = profile.files
+        imgInp.onchange = evt => {
+            const [file] = imgInp.files
             if (file) {
                 blah.src = URL.createObjectURL(file)
             }

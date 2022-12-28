@@ -3,7 +3,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="{{ route('dashboard') }}">
+            <a class="nav-link {{ request()->routeIs('dashboard') ? '' : 'collapsed' }}" href="{{ route('dashboard') }}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -90,13 +90,15 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('users') }}">
+            <a class="nav-link {{ request()->routeIs('users') || request()->routeIs('users.create') || request()->routeIs('users.edit') ? '' : 'collapsed' }}"
+                href="{{ route('users') }}">
                 <i class="bi bi-person"></i>
                 <span>User</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('roles') }}">
+            <a class="nav-link {{ request()->routeIs('roles') || request()->routeIs('roles.create') || request()->routeIs('roles.edit') ? '' : 'collapsed' }}"
+                href="{{ route('roles') }}">
                 <i class="bi bi-shield-lock"></i>
                 <span>Role</span>
             </a>

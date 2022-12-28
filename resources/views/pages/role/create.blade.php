@@ -15,11 +15,9 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        @can('role-create')
-            <a href="{{ route('roles') }}" class="d-flex align-items-center btn btn-primary">
-                <i class="bi bi-arrow-left-circle"></i> &nbsp; Back
-            </a>
-        @endcan
+        <a href="{{ route('roles') }}" class="d-flex align-items-center btn btn-primary">
+            <i class="bi bi-arrow-left-circle"></i> &nbsp; Back
+        </a>
     </div>
 
     <section class="section">
