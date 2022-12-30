@@ -39,12 +39,14 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
         Route::get('/', [UserController::class, 'index'])->name('users');
         Route::get('/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/save', [UserController::class, 'save'])->name('users.save');
+        Route::get('/show/{id}', [UserController::class, 'show'])->name('users.show');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
         Route::get('/list', [UserController::class, 'getRoleList'])->name('getuserlist');
         Route::get('/export',[UserController::class,  'export'])->name('users.export');
         Route::post('/import', [UserController::class, 'import'])->name('users.import');
+        Route::post('/email-integration/{id}', [UserController::class, 'sendEmail'])->name('send.email');
     });
     // User end //
 });

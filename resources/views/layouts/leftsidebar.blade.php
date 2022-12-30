@@ -92,15 +92,15 @@
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('users') || request()->routeIs('users.create') || request()->routeIs('users.edit') ? '' : 'collapsed' }}"
                 href="{{ route('users') }}">
-                <i class="bi bi-person"></i>
-                <span>User</span>
+                <i class="bi bi-people"></i>
+                <span>Members</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('roles') || request()->routeIs('roles.create') || request()->routeIs('roles.edit') ? '' : 'collapsed' }}"
                 href="{{ route('roles') }}">
                 <i class="bi bi-shield-lock"></i>
-                <span>Role</span>
+                <span>Roles</span>
             </a>
         </li>
 

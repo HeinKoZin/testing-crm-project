@@ -1,5 +1,5 @@
 @extends('layouts.mainlayout')
-@section('title', 'User')
+@section('title', 'Member')
 @section('links')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -7,11 +7,11 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>User Page</h1>
+            <h1>Member Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">User</li>
+                    <li class="breadcrumb-item active">Member</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -33,7 +33,7 @@
                             @csrf
                             <div class="row py-4">
                                 <div class="col-md-12">
-                                    <h3>Excel Import</h3>
+                                    <h5>Excel Import</h5>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="file" name="file" class="form-control">
@@ -44,9 +44,45 @@
                             </div>
                         </form>
                         <hr>
-                        <h5 class="card-title">User List </h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="gender" style="font-weight: 700">Gender:</label>
+                                    <select id="gender" class="form-select" aria-label="Default select example">
+                                        <option value="0">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="role" style="font-weight: 700">Role:</label>
+                                    <select id="role" class="form-select" aria-label="Default select example">
+                                        <option value="0">Select Role</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="date" style="font-weight: 700">Date Range:</label>
+                                    <div
+                                        style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%">
+                                        <input type="text" class="form-control" name="daterange" id="daterange" />
+                                        <div id="from"></div>
+                                        <div id="to"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5 class="card-title">Member List </h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="userDataTable"
+                            <table class="table table-striped table-hover table-sm" id="userDataTable"
                                 style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
@@ -68,6 +104,37 @@
             </div>
         </div>
     </section>
+
+    @foreach ($users as $user)
+        <div class="modal fade" id="exampleModal{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{ route('send.email', ['id' => $user->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Send Mail to ({{ $user->name }})</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="Title">Title:</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Content:</label>
+                                <textarea name="content" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 @endsection
 @section('script')
     <script type="text/javascript">
@@ -83,7 +150,16 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
                 ],
-                ajax: "{{ route('getuserlist') }}",
+                ajax: {
+                    url: "{{ route('getuserlist') }}",
+                    data: function(d) {
+                        d.gender = $('#gender').val(),
+                            d.role = $('#role').val(),
+                            d.from_date = $('#from_date').val(),
+                            d.to_date = $('#to_date').val(),
+                            d.search = $('input[type="search"]').val()
+                    }
+                },
                 columns: [{
                         data: 'id',
                         render: function(data, type, row, meta) {
@@ -119,6 +195,15 @@
 
                 ]
             });
+            $('#gender').change(function() {
+                table.draw();
+            });
+            $('#role').change(function() {
+                table.draw();
+            });
+            $('#daterange').change(function() {
+                table.draw();
+            });
             $('#userDataTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
@@ -142,6 +227,18 @@
 
             });
 
+        });
+    </script>
+    <script>
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left',
+            drops: 'buttom',
+        }, function(start, end, label) {
+            document.getElementById("from").innerHTML =
+                `<input name='from_date' id="from_date" type='date' value="${start.format('YYYY-MM-DD') }" hidden />`;
+            document.getElementById("to").innerHTML =
+                `<input name='to_date' id="to_date" type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
+            // console.log(start.format('YYYY-MM-DD'));
         });
     </script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
