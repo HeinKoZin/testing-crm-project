@@ -123,22 +123,24 @@ class UserController extends Controller
 
                     })
                     ->filter(function ($instance) use ($request) {
-                        if ($request->get('role')){
-                            $instance->select('users.*', 'roles.id as role_id')->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-                            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id');
-                            $instance->where('role_id', $request->get('role'));
-                        }
-                        if ($request->get('gender')){
-                            $instance->where('gender', $request->get('gender'));
-                        }
                         if($request->has('from_date')){
                             $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
                             $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
                             $start_date = $from_date != null ? "$from_date 00:00:00" : null;
                             $end_date = $to_date != null ? "$to_date 23:59:59" : null;
-                            $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
+                            $instance = $instance->whereBetween('users.created_at', [$start_date, $end_date]);
 
                         }
+                        if ($request->get('gender')){
+                            $instance->where('users.gender', $request->get('gender'));
+                        }
+                        if ($request->get('role')){
+                            $instance->select('users.*', 'roles.id as role_id')->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id');
+                            $instance->where('role_id', $request->get('role'));
+                        }
+
+
                     })
                     ->rawColumns(['created_at', 'action', 'profile'  ])
                     ->make(true);
