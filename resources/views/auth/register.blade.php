@@ -114,6 +114,30 @@
                                                 <label class="form-check-label" for="inlineRadio2">Other</label>
                                             </div>
                                         </div>
+                                        <div class="col-6">
+                                            <label for="nrc" class="form-label">Nrc</label>
+                                            <input id="nrc" type="text"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                name="nrc">
+
+                                            @error('nrc')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="father_name" class="form-label">Father Name</label>
+                                            <input id="father_name" type="text"
+                                                class="form-control @error('father_name') is-invalid @enderror"
+                                                name="father_name">
+
+                                            @error('father_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
                                         <div class="col-12">
                                             <label for="yourPassword" class="form-label">Password</label>
                                             <input id="password" type="password"
@@ -134,10 +158,10 @@
                                         <div class="col-12">
                                             <button class="btn btn-dark w-100" type="submit">Create Account</button>
                                         </div>
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <p class="small mb-0">Already have an account? <a
                                                     href="{{ route('auth.login.index') }}">Log in</a></p>
-                                        </div>
+                                        </div> --}}
                                     </form>
 
                                 </div>

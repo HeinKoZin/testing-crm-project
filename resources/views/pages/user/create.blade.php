@@ -1,5 +1,5 @@
 @extends('layouts.mainlayout')
-@section('title', 'Create Member')
+@section('title', 'Create User')
 @section('links')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -7,11 +7,11 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Create Member Page</h1>
+            <h1>Create User Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Member</li>
+                    <li class="breadcrumb-item active">User</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -25,13 +25,13 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Create Member </h5>
+                        <h5 class="card-title">Create User </h5>
                         <form action="{{ route('users.save') }}" method="POST" novalidate enctype="multipart/form-data"
                             class="needs-validation">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label>Member Profile:</label>
+                                    <label>User Profile:</label>
                                     <br>
                                     <label for="imgInp">
                                         <img id="blah" src="{{ asset('assets/img/images.jpg') }}"
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group pb-4">
-                                        <label for="name"><strong>Member Name <span style="color: red">*</span>
+                                        <label for="name"><strong>User Name <span style="color: red">*</span>
                                                 :</strong></label>
                                         <input type="text" class="@error('name') is-invalid @enderror form-control"
                                             name="name" value="{{ old('name') }}">

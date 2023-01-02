@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Member;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -28,9 +29,8 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'bail|required|email|unique:users',
+            'email' => 'bail|required|email',
             'password' => 'bail|required|confirmed|min:6',
-            'phone_no' => 'unique:users',
         ]);
 
         $password = Hash::make($request->password);
@@ -41,17 +41,25 @@ class AuthController extends Controller
             $path = '/storage/' . $filePath;
         }
 
-        $user = User::create([
+        $member = Member::create([
             'name' => $request->name,
             'email' => $request->email,
             'profile' => $path,
             'password' => $password,
             'gender' => $request->gender,
             'phone' => $request->phone,
+            'nrc' => $request->nrc,
+            'father_name' => $request->father_name,
+            'status' => false,
         ]);
-        $role = Role::find(2);
-        $user->assignRole($role->id);
-        return redirect()->route('auth.login.index')->with('success', "Registration Successfully!");
+        // $role = Role::find(2);
+        // $user->assignRole($role->id);
+        return redirect()->route('success.member')->with('success', "Registration Successfully!");
+    }
+
+    public function successMember()
+    {
+       return view('pages.member.successful');
     }
 
     public function loginPage()

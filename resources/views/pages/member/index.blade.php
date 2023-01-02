@@ -1,5 +1,5 @@
 @extends('layouts.mainlayout')
-@section('title', 'User')
+@section('title', 'Member')
 @section('links')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -7,18 +7,18 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>User Page</h1>
+            <h1>Member Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">User</li>
+                    <li class="breadcrumb-item active">Member</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
         {{-- <a class="btn btn-warning float-end" href="{{ route('users.export') }}">Export User Data</a> --}}
         @can('role-create')
-            <a href="{{ route('users.create') }}" class="d-flex align-items-center btn btn-primary">
+            <a href="{{ route('members.create') }}" class="d-flex align-items-center btn btn-primary">
                 <i class="bi bi-plus-lg"></i> &nbsp; Create
             </a>
         @endcan
@@ -29,7 +29,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('members.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row py-4">
                                 <div class="col-md-12">
@@ -58,17 +58,6 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="role" style="font-weight: 700">Role:</label>
-                                    <select id="role" class="form-select" aria-label="Default select example">
-                                        <option value="0">Select Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
                                     <label for="date" style="font-weight: 700">Date Range:</label>
                                     <div
                                         style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%">
@@ -80,7 +69,7 @@
                             </div>
                         </div>
                         <hr>
-                        <h5 class="card-title">User List </h5>
+                        <h5 class="card-title">Member List </h5>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-sm" id="userDataTable"
                                 style="width: 100%; height: 100%">
@@ -105,7 +94,7 @@
         </div>
     </section>
 
-    @foreach ($users as $user)
+    @foreach ($members as $user)
         <div class="modal fade" id="exampleModal{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -151,7 +140,7 @@
                     'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
                 ],
                 ajax: {
-                    url: "{{ route('getuserlist') }}",
+                    url: "{{ route('getmemberlist') }}",
                     data: function(d) {
                         d.gender = $('#gender').val(),
                             d.role = $('#role').val(),

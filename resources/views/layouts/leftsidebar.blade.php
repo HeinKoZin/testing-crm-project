@@ -90,10 +90,17 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('members') || request()->routeIs('members.create') || request()->routeIs('members.edit') ? '' : 'collapsed' }}"
+                href="{{ route('members') }}">
+                <i class="bi bi-people"></i>
+                <span>Members</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('users') || request()->routeIs('users.create') || request()->routeIs('users.edit') ? '' : 'collapsed' }}"
                 href="{{ route('users') }}">
                 <i class="bi bi-people"></i>
-                <span>Members</span>
+                <span>Users</span>
             </a>
         </li>
         <li class="nav-item">

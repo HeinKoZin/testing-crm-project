@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\MemberController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
 
@@ -49,15 +50,34 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
         Route::post('/email-integration/{id}', [UserController::class, 'sendEmail'])->name('send.email');
     });
     // User end //
+
+    // Member start //
+    Route::group(["prefix" => "members"], function () {
+        Route::get('/', [MemberController::class, 'index'])->name('members');
+        Route::get('/create', [MemberController::class, 'create'])->name('members.create');
+        Route::post('/save', [MemberController::class, 'save'])->name('members.save');
+        Route::get('/show/{id}', [MemberController::class, 'show'])->name('members.show');
+        Route::get('/edit/{id}', [MemberController::class, 'edit'])->name('members.edit');
+        Route::put('/update/{id}', [MemberController::class, 'update'])->name('members.update');
+        Route::delete('/delete/{id}', [MemberController::class, 'delete'])->name('members.delete');
+        Route::get('/list', [MemberController::class, 'getRoleList'])->name('getmemberlist');
+        Route::get('/export',[MemberController::class,  'export'])->name('members.export');
+        Route::post('/import', [MemberController::class, 'import'])->name('members.import');
+        Route::post('/email-integration/member/{id}', [MemberController::class, 'sendEmail'])->name('members.send.email');
+    });
+    // Member end //
 });
 
-Route::group(["namespace" => "Auth", "prefix" => "auth"], function () {
-    Route::get('/login', [AuthController::class, 'loginPage'])->name('auth.login.index');
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-    Route::get('/register', [AuthController::class, 'registerPage'])->name('auth.register.index');
-    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::group(["namespace" => "Auth"], function () {
+    Route::get('/auth/login', [AuthController::class, 'loginPage'])->name('auth.login.index');
+    Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/member/register', [AuthController::class, 'registerPage'])->name('auth.register.index');
+    Route::post('/member/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('/member/success', [AuthController::class, 'successMember'])->name('success.member');
 });
+
+
 
 Auth::routes();
 

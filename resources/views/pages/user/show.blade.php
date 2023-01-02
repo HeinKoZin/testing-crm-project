@@ -1,15 +1,15 @@
 @extends('layouts.mainlayout')
-@section('title', 'Member Show')
+@section('title', 'User Show')
 @section('links')
 @endsection
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Member Detail Page</h1>
+            <h1>User Detail Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Member</li>
+                    <li class="breadcrumb-item active">User</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
