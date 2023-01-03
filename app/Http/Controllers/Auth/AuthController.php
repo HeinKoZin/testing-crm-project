@@ -50,7 +50,6 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'nrc' => $request->nrc,
             'father_name' => $request->father_name,
-            'status' => false,
         ]);
         // $role = Role::find(2);
         // $user->assignRole($role->id);

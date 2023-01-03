@@ -7,6 +7,7 @@ use App\Mail\MemberMail;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +39,15 @@ class MemberController extends Controller
                         return '<img src="' . $url . '"
                     alt="Profile Image" style="width: 40px; height: 40px; border-radius: 4px;">';
                     })
+                    ->addColumn('status', function ($row) {
+                        if($row->status == "pending"){
+                            return '<span class="badge rounded-pill text-bg-primary">'.$row->status.'</span>';
+                        }
+                        if($row->status == "approved"){
+                            return '<span class="badge rounded-pill text-bg-success">'.$row->status.'</span>';
+                        }
+                    })
+
                     ->addColumn('action', function ($row) use ($user) {
                         if ($user->can('role-delete') && $user->can('role-edit')) {
                             return '
@@ -66,7 +76,13 @@ class MemberController extends Controller
                                             <form method="post" action="' . route("members.delete", ["id" => $row->id]) . ' "
                                             id="from1" data-flag="0">
                                             ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm delete" style="width: 100%"> <i class="bi bi-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm delete mb-2" style="width: 100%"> <i class="bi bi-trash"></i> Delete</button>
+                                                </form>
+                                        </li>
+                                        <li>
+                                            <form method="post" action="' . route("members.approved", ["id" => $row->id]) . ' " data-flag="0">
+                                            ' . csrf_field() . '<input type="hidden" name="_method" value="PUT">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" style="width: 100%"> <i class="bi bi-trash"></i> Approved</button>
                                                 </form>
                                         </li>
                                     </ul>
@@ -89,6 +105,12 @@ class MemberController extends Controller
                                         <a href="' . route("members.edit", ["id" => $row->id]) . '" class="btn btn-success btn-sm " style="width: 100%" >
                                             <i class="bi bi-pencil-square"></i>  Edit
                                         </a>
+                                    </li>
+                                    <li>
+                                        <form method="post" action="' . route("members.approved", ["id" => $row->id]) . ' " data-flag="0">
+                                        ' . csrf_field() . '<input type="hidden" name="_method" value="PUT">
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm" style="width: 100%"> <i class="bi bi-trash"></i> Approved</button>
+                                            </form>
                                     </li>
                                 </ul>
                             </div>';
@@ -119,27 +141,22 @@ class MemberController extends Controller
 
 
                     })
-                    // ->filter(function ($instance) use ($request) {
-                    //     if($request->has('from_date')){
-                    //         $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
-                    //         $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
-                    //         $start_date = $from_date != null ? "$from_date 00:00:00" : null;
-                    //         $end_date = $to_date != null ? "$to_date 23:59:59" : null;
-                    //         $instance = $instance->whereBetween('users.created_at', [$start_date, $end_date]);
+                    ->filter(function ($instance) use ($request) {
+                        if($request->has('from_date')){
+                            $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
+                            $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
+                            $start_date = $from_date != null ? "$from_date 00:00:00" : null;
+                            $end_date = $to_date != null ? "$to_date 23:59:59" : null;
+                            $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
-                    //     }
-                    //     if ($request->get('gender')){
-                    //         $instance->where('users.gender', $request->get('gender'));
-                    //     }
-                    //     if ($request->get('role')){
-                    //         $instance->select('users.*', 'roles.id as role_id')->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-                    //         ->join('roles', 'roles.id', '=', 'model_has_roles.role_id');
-                    //         $instance->where('role_id', $request->get('role'));
-                    //     }
+                        }
+                        if ($request->get('gender')){
+                            $instance->where('gender', $request->get('gender'));
+                        }
 
 
-                    // })
-                    ->rawColumns(['created_at', 'action', 'profile'  ])
+                    })
+                    ->rawColumns(['created_at', 'action', 'profile', 'status'  ])
                     ->make(true);
         }
     }
@@ -184,7 +201,7 @@ class MemberController extends Controller
     {
         $member = Member::find($id);
         // dd($userRole);
-        return view('pages.members.edit', compact('member'));
+        return view('pages.member.edit', compact('member'));
     }
 
     public function update(Request $request, $id)
@@ -223,7 +240,7 @@ class MemberController extends Controller
     public function show($id)
     {
         $member = Member::find($id);
-        return view('pages.user.show', compact('member'));
+        return view('pages.member.show', compact('member'));
     }
 
     public function delete($id)
@@ -259,5 +276,14 @@ class MemberController extends Controller
         Mail::to($member->email)->send(new MemberMail($member,$title, $content));
 
         return redirect()->back()->with('success', 'Email has been send successfully!');
+    }
+
+    public function approved($id)
+    {
+        Member::find($id)->update([
+            'status' => 'approved'
+        ]);
+
+        return redirect()->route('members')->with('success', 'Member approved successful!');
     }
 }

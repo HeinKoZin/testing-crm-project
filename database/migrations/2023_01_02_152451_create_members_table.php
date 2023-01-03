@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('nrc')->nullable();
-            $table->boolean('status')->default(0);
+            $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->string('father_name')->nullable();
             $table->timestamps();
         });

@@ -59,6 +59,7 @@ Route::group(["namespace" => "Dashboard", 'middleware' => ['auth']], function ()
         Route::get('/show/{id}', [MemberController::class, 'show'])->name('members.show');
         Route::get('/edit/{id}', [MemberController::class, 'edit'])->name('members.edit');
         Route::put('/update/{id}', [MemberController::class, 'update'])->name('members.update');
+        Route::put('/approved/{id}', [MemberController::class, 'approved'])->name('members.approved');
         Route::delete('/delete/{id}', [MemberController::class, 'delete'])->name('members.delete');
         Route::get('/list', [MemberController::class, 'getRoleList'])->name('getmemberlist');
         Route::get('/export',[MemberController::class,  'export'])->name('members.export');
